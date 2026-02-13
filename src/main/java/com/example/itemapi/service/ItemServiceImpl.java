@@ -2,6 +2,8 @@ package com.example.itemapi.service;
 
 import com.example.itemapi.dto.ItemRequest;
 import com.example.itemapi.dto.ItemResponse;
+import com.example.itemapi.exception.ResourceNotFoundException;
+import com.example.itemapi.exception.ValidationException;
 import com.example.itemapi.model.Item;
 import com.example.itemapi.repository.ItemRepository;
 import com.example.itemapi.util.IdGenerator;
@@ -23,6 +25,14 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemResponse addItem(ItemRequest request) {
+
+        if (request.getName() == null || request.getName().trim().isEmpty()) {
+            throw new ValidationException("Item name is required");
+        }
+
+        if (request.getDescription() == null || request.getDescription().trim().isEmpty()) {
+            throw new ValidationException("Item description is required");
+        }
 
         Item item = new Item();
 
@@ -47,7 +57,7 @@ public class ItemServiceImpl implements ItemService {
     public ItemResponse getItemById(Long id) {
 
         Item item = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Item not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Item not found with id: " + id));
 
         return mapToResponse(item);
     }
