@@ -9,4 +9,8 @@ public interface ItemService {
 
     ItemResponse getItemById(Long id);
 
+    ItemResponse updateItem(Long id, ItemRequest request);
+
+    void deleteItem(Long id);
+
 }

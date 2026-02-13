@@ -13,4 +13,8 @@ public interface ItemRepository {
 
     List<Item> findAll();
 
+    void deleteById(Long id);
+
+    boolean existsById(Long id);
+
 }

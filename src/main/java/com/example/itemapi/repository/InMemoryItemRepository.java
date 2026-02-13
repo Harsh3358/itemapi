@@ -33,4 +33,14 @@ public class InMemoryItemRepository implements ItemRepository {
 
         return new ArrayList<>(storage.values());
     }
+
+    @Override
+    public void deleteById(Long id) {
+        storage.remove(id);
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return storage.containsKey(id);
+    }
 }

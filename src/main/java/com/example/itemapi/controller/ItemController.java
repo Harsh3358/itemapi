@@ -37,4 +37,24 @@ public class ItemController {
 
         return ResponseEntity.ok(response);
     }
+
+    // UPDATE item
+    @PutMapping("/{id}")
+    public ResponseEntity<ItemResponse> updateItem(
+            @PathVariable Long id,
+            @RequestBody ItemRequest request) {
+
+        ItemResponse response = itemService.updateItem(id, request);
+
+        return ResponseEntity.ok(response);
+    }
+
+    // DELETE item
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteItem(@PathVariable Long id) {
+
+        itemService.deleteItem(id);
+
+        return ResponseEntity.noContent().build();
+    }
 }

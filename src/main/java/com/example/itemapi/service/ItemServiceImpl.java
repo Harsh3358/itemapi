@@ -74,4 +74,39 @@ public class ItemServiceImpl implements ItemService {
                 item.getCreatedAt()
         );
     }
+
+    @Override
+    public ItemResponse updateItem(Long id, ItemRequest request) {
+
+        Item item = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Item not found with id: " + id));
+
+        if (request.getName() == null || request.getName().trim().isEmpty()) {
+            throw new ValidationException("Item name is required");
+        }
+
+        if (request.getDescription() == null || request.getDescription().trim().isEmpty()) {
+            throw new ValidationException("Item description is required");
+        }
+
+        item.setName(request.getName());
+        item.setDescription(request.getDescription());
+        item.setPrice(request.getPrice());
+        item.setCategory(request.getCategory());
+        item.setUpdatedAt(Instant.now());
+
+        repository.save(item);
+
+        return mapToResponse(item);
+    }
+
+    @Override
+    public void deleteItem(Long id) {
+
+        if (!repository.existsById(id)) {
+            throw new ResourceNotFoundException("Item not found with id: " + id);
+        }
+
+        repository.deleteById(id);
+    }
 }
